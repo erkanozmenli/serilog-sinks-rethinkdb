@@ -1,0 +1,71 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{77F632B8-A844-4ED1-AAA1-18ED68FC54A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{D8A9B143-22C6-4116-BB06-4558502EA3E7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serilog.Sinks.RethinkDB", "src\Serilog.Sinks.RethinkDB\Serilog.Sinks.RethinkDB.csproj", "{8998145C-E8B1-4666-B114-6FA216E46984}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "net461ConsoleApp", "sample\net461ConsoleApp\net461ConsoleApp.csproj", "{BE5A8B52-E70E-4260-A8A7-7601EBAAA8B9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "netCore21ConsoleApp", "sample\netCore21ConsoleApp\netCore21ConsoleApp.csproj", "{5F75A1F1-4C4E-47A5-AFFA-6FDE8CE4A4AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "net50ConsoleApp", "sample\net50ConsoleApp\net50ConsoleApp.csproj", "{458DABC2-9F86-4075-9243-C4D05C71CFAD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "netCore31ConsoleApp", "sample\netCore31ConsoleApp\netCore31ConsoleApp.csproj", "{D93F4C14-302D-453E-BB67-136D8D96B155}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{97634037-E6DA-4FBC-B2F6-6A4C9D5A03D7}"
+	ProjectSection(SolutionItems) = preProject
+		test\placeholder.txt = test\placeholder.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{E1A095FB-802F-4735-9513-AFC06D334FFD}"
+	ProjectSection(SolutionItems) = preProject
+		assets\icon.png = assets\icon.png
+		assets\Serilog.snk = assets\Serilog.snk
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8998145C-E8B1-4666-B114-6FA216E46984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8998145C-E8B1-4666-B114-6FA216E46984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8998145C-E8B1-4666-B114-6FA216E46984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8998145C-E8B1-4666-B114-6FA216E46984}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE5A8B52-E70E-4260-A8A7-7601EBAAA8B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE5A8B52-E70E-4260-A8A7-7601EBAAA8B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE5A8B52-E70E-4260-A8A7-7601EBAAA8B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE5A8B52-E70E-4260-A8A7-7601EBAAA8B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F75A1F1-4C4E-47A5-AFFA-6FDE8CE4A4AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F75A1F1-4C4E-47A5-AFFA-6FDE8CE4A4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F75A1F1-4C4E-47A5-AFFA-6FDE8CE4A4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F75A1F1-4C4E-47A5-AFFA-6FDE8CE4A4AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{458DABC2-9F86-4075-9243-C4D05C71CFAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{458DABC2-9F86-4075-9243-C4D05C71CFAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{458DABC2-9F86-4075-9243-C4D05C71CFAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{458DABC2-9F86-4075-9243-C4D05C71CFAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D93F4C14-302D-453E-BB67-136D8D96B155}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D93F4C14-302D-453E-BB67-136D8D96B155}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D93F4C14-302D-453E-BB67-136D8D96B155}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D93F4C14-302D-453E-BB67-136D8D96B155}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8998145C-E8B1-4666-B114-6FA216E46984} = {77F632B8-A844-4ED1-AAA1-18ED68FC54A0}
+		{BE5A8B52-E70E-4260-A8A7-7601EBAAA8B9} = {D8A9B143-22C6-4116-BB06-4558502EA3E7}
+		{5F75A1F1-4C4E-47A5-AFFA-6FDE8CE4A4AF} = {D8A9B143-22C6-4116-BB06-4558502EA3E7}
+		{458DABC2-9F86-4075-9243-C4D05C71CFAD} = {D8A9B143-22C6-4116-BB06-4558502EA3E7}
+		{D93F4C14-302D-453E-BB67-136D8D96B155} = {D8A9B143-22C6-4116-BB06-4558502EA3E7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C7490AF0-6013-4210-9211-358D20193759}
+	EndGlobalSection
+EndGlobal

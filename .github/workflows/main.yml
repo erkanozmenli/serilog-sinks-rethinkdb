@@ -1,0 +1,26 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+
+    - name: Build
+      run: dotnet build --configuration Release
+      working-directory: ./src/Serilog.Sinks.RethinkDB
+
+    - name: Generate nuget package
+      run: dotnet pack --configuration Release
+      working-directory: ./src/Serilog.Sinks.RethinkDB
+
+   # - name: Publish nuget package to nuget.org
+   #   run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGETORG_API_KEY}}

@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net452;net461</TargetFrameworks>
+    <Authors>Erkan Özmenli,Serilog Contributors</Authors>
+    <Description>Serilog sink for RethinkDB</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>serilog;sinks;rethinkdb</PackageTags>
+    <Copyright>Copyright © Serilog Contributors 2021</Copyright>
+    <Version>1.0.9</Version>
+    <PackageProjectUrl>https://github.com/erkanozmenli/serilog-sinks-rethinkdb</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/erkanozmenli/serilog-sinks-rethinkdb</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageIconUrl />
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Serilog.snk</AssemblyOriginatorKeyFile>
+    <PackageId>Serilog.Sinks.RethinkDB2</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RethinkDb.Driver" Version="2.3.150" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.3.0" />
+  </ItemGroup>
+
+
+	<ItemGroup>
+		<!-- Ensure MSBuild ignores all build-target-specific files by default -->
+		<Compile Remove="Configuration\Extensions\Microsoft.Extensions.Configuration\**\*.*" />
+		<Compile Remove="Configuration\Extensions\System.Configuration\**\*.*" />
+		<Compile Remove="Configuration\Implementations\System.Configuration\**\*.*" />
+		<Compile Remove="Configuration\Implementations\Microsoft.Extensions.Configuration\**\*.*" />
+		<None Include="..\..\assets\icon.png">
+		  <Pack>True</Pack>
+		  <PackagePath></PackagePath>
+		</None>
+		<!-- Show in VStudio, but MSBuild ignores these (indicates files are not code, non-published-content, etc.) -->
+		<None Include="Configuration\Extensions\Microsoft.Extensions.Configuration\**\*.*" />
+		<None Include="Configuration\Extensions\System.Configuration\**\*.*" />
+		<None Include="Configuration\Implementations\System.Configuration\**\*.*" />
+		<None Include="Configuration\Implementations\Microsoft.Extensions.Configuration\**\*.*" />
+		<!-- ItemGroups below with TFM conditions will re-include the compile targets -->
+	</ItemGroup>
+		
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="Microsoft.Extensions.Configuration"><Version>5.0.0</Version></PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json"><Version>5.0.0</Version></PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"><Version>5.0.0</Version></PackageReference>
+		<Compile Include="Configuration\Implementations\Microsoft.Extensions.Configuration\**\*.cs" />
+		<Compile Include="Configuration\Extensions\Microsoft.Extensions.Configuration\**\*.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+		<Reference Include="System.Data" />
+		<Reference Include="System.Xml" />
+		<Reference Include="System.Xml.Linq" />
+		<Reference Include="System.Configuration" />
+		<Reference Include="System" />
+		<Reference Include="Microsoft.CSharp" />
+		<Compile Include="Configuration\Implementations\System.Configuration\**\*.cs" />
+		<Compile Include="Configuration\Extensions\System.Configuration\**\*.cs" />
+	</ItemGroup>
+		
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net461' Or '$(TargetFramework)' == 'net472' ">
+		<PackageReference Include="System.Configuration.ConfigurationManager"><Version>5.0.0</Version></PackageReference>
+		<Compile Include="Configuration\Implementations\System.Configuration\**\*.cs" />
+		<Compile Include="Configuration\Extensions\System.Configuration\**\*.cs" />
+	</ItemGroup>
+	
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' Or '$(TargetFramework)' == 'netcoreapp2.1' Or '$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'NET 5.0' ">
+		<PackageReference Include="Microsoft.Extensions.Configuration"><Version>5.0.0</Version></PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"><Version>5.0.0</Version></PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json"><Version>5.0.0</Version></PackageReference>
+		<Compile Include="Configuration\Implementations\Microsoft.Extensions.Configuration\**\*.cs" />
+		<Compile Include="Configuration\Extensions\Microsoft.Extensions.Configuration\**\*.cs" />
+	</ItemGroup>
+	
+</Project>
