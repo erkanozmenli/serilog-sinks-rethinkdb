@@ -22,5 +22,5 @@ jobs:
       run: dotnet pack --configuration Release
       working-directory: ./src/Serilog.Sinks.RethinkDB
 
-   # - name: Publish nuget package to nuget.org
-   #   run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGETORG_API_KEY}}
+    - name: Publish nuget package to nuget.org
+      run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGETORG_API_KEY}}
