@@ -1,4 +1,4 @@
-# Serilog.Sinks.RethinkDB [![build](https://github.com/erkanozmenli/serilog-sinks-rethinkdb/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/erkanozmenli/serilog-sinks-rethinkdb/actions/workflows/main.yml) [![NuGet version (Serilog.Sinks.RethinkDB2)](https://img.shields.io/nuget/v/Serilog.Sinks.RethinkDB2.svg?style=flat-square)](https://www.nuget.org/packages/Serilog.Sinks.RethinkDB2/)
+# Serilog.Sinks.RethinkDB [![build](https://github.com/erkanozmenli/serilog-sinks-rethinkdb/actions/workflows/main.yml/badge.svg)](https://github.com/erkanozmenli/serilog-sinks-rethinkdb/actions/workflows/main.yml) [![NuGet version (Serilog.Sinks.RethinkDB2)](https://img.shields.io/nuget/v/Serilog.Sinks.RethinkDB2.svg?style=flat-square)](https://www.nuget.org/packages/Serilog.Sinks.RethinkDB2/)
 
 A Serilog sink that writes events to RethinkDB.  
 
