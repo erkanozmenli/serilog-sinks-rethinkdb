@@ -1,11 +1,11 @@
-# Serilog.Sinks.RethinkDB [![build](https://github.com/erkanozmenli/serilog-sinks-rethinkdb/actions/workflows/main.yml/badge.svg)](https://github.com/erkanozmenli/serilog-sinks-rethinkdb/actions/workflows/main.yml) [![NuGet version (Serilog.Sinks.RethinkDB2)](https://img.shields.io/nuget/v/Serilog.Sinks.RethinkDB2.svg?style=flat-square)](https://www.nuget.org/packages/Serilog.Sinks.RethinkDB2/)
+# Serilog.Sinks.RethinkDB [![build](https://github.com/erkanozmenli/serilog-sinks-rethinkdb/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/erkanozmenli/serilog-sinks-rethinkdb/actions/workflows/main.yml) [![NuGet version (Serilog.Sinks.RethinkDB2)](https://img.shields.io/nuget/v/Serilog.Sinks.RethinkDB2.svg?style=flat-square)](https://www.nuget.org/packages/Serilog.Sinks.RethinkDB2/)
 
 A Serilog sink that writes events to RethinkDB.  
 
 #### Topics
 * [Quick Start](#quick-start)
 * [Sink Configuration](#sink-configuration)
-* [.WriteTo or AuditTo?](#writeto-or-auditto)
+* [.WriteTo or .AuditTo?](#writeto-or-auditto)
 * [Additional Features](#additional-features)
 
 ### Quick Start
@@ -113,11 +113,11 @@ In both .NET Framework and .NET Core, you can override any sink options by passi
  Log.Information("Log from .NET Core");
 ```
   
-### .WriteTo or AuditTo?
-RethinkDB sink has both .WriteTo and .AuditTo implemmentations. In your production environment I recommend you to use .WriteTo because it does not only work asynchronously but also have batching functionality. The other options is .AuditTo but it works synchronously and does not have bacthing functionality.
+### .WriteTo or .AuditTo?
+RethinkDB sink has both .WriteTo and .AuditTo implemmentations. In your production environment I recommend you to use .WriteTo because it does not only work asynchronously but also have batching functionality. The other options is .AuditTo but it works synchronously and does not have batching functionality.
   
 ### Additional Features
-Personally I do not use Serilog's Props feature (At least for now). Instead I implemented two additional properties which are **ContextData** amd **ContextName**.
+Personally I do not use Serilog's Props feature (At least for now). Instead I implemented two additional properties which are **ContextData** and **ContextName**.
   
 **ContextName** property holds the name of the object that I associated with Serilog's ForContext feature.  
 **ContextObject** property holds the object's itself.  
@@ -175,7 +175,7 @@ The above code gives the following json output. Pay attention **.Log()** extenti
     "MessageTemplate": "Personel {0}",
     "Props": null,
     "SequentialId": 1,
-    "Timestamp": Wed Oct 06 2021 20: 00: 11 GMT+03: 00,
+    "Timestamp": Wed Oct 06 2021 20:00:11 GMT+03:00,
     "id": "dcf1b8de-0494-4569-9da8-048bfd915bc1"
 },
 {
@@ -191,7 +191,7 @@ The above code gives the following json output. Pay attention **.Log()** extenti
     "MessageTemplate": "Personel {0}",
     "Props": null,
     "SequentialId": 2,
-    "Timestamp": Wed Oct 06 2021 20: 00: 11 GMT+03: 00,
+    "Timestamp": Wed Oct 06 2021 20:00:11 GMT+03:00,
     "id": "6d5b90ac-9f12-42fd-9a65-42a57f5cd16f"
 }
 ```
@@ -199,5 +199,12 @@ The above code gives the following json output. Pay attention **.Log()** extenti
 Another additional feature I added is **SequentialId**.  
 When you insert many data at the same time or in a loop, they might have the same milliseconds in Timestamp field. This might causes non-sequential output when you query your collection even with RQL **.orderBy** function. For this reason, I added **SequentialIdEnricher** to enrich the sink. Use this enricher if you want to add an auto-increment field to your logs. The sink already automaticallly creates a compound index (idx) with the combination of SequentialId and Timestamp fields to get right order.
   
-In the last C# sample you may have noticed that we also used **SequentialIdEnricher>()**. As a result in json output we had auto-incremental values at SequentialId field. But the important thing to keep in mind is that unlike auto-increment fields in RDMS, <ins>SequentialId is reset when your session ends</ins>.
-  
+In the last C# sample you may have noticed that we also used **SequentialIdEnricher>()**. As a result in json output we had auto-incremental values at SequentialId field. But the important thing to keep in mind is that unlike auto-increment fields in RDMS, <ins>SequentialId is reset when your session ends</ins>.  
+
+You can use auto-created compound index (idx) in your RQL statements to efficiently retrieve and order documents in your RethinkDB admin panel like below.
+
+```javascript
+r.db("logging01").table("table01").orderBy({index: 'idx'})
+r.db("logging01").table("table01").orderBy({index: r.desc('idx')})
+```
+If you enable Query Profiler in your RethinkDB admin panel, you can see the speed difference of your queries with or without index.
