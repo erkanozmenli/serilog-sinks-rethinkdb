@@ -12,16 +12,29 @@ namespace net461ConsoleApp
     {
         static void Main(string[] args)
         {
+            //Log.Logger = new LoggerConfiguration()
+            //    .MinimumLevel.Debug()
+            //    .AuditTo.RethinkDB()
+            //    .Enrich.With<SequentialIdEnricher>()
+            //    .CreateLogger();
+
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .AuditTo.RethinkDB()
+                .WriteTo.RethinkDB()
                 .Enrich.With<SequentialIdEnricher>()
                 .CreateLogger();
+
 
             var customer = new { CustomerName = "XCompany", CustomerID = 112345, CustomerCode = "0022222" };
             var log = Log.ForContext(customer.Log());
 
-            log.Information("{test}", "console");
+            for (int i = 0; i < 1000; i++)
+            {
+                log.Information("{test}", "console");
+            }
+
+            Log.CloseAndFlush();
         }
     }
 }
