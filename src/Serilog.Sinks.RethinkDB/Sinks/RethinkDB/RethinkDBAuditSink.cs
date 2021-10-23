@@ -36,7 +36,6 @@ namespace Serilog.Sinks.RethinkDB
         private readonly string _indexName;
         private readonly bool _useProps;
         private static readonly RethinkDb.Driver.RethinkDB R = RethinkDb.Driver.RethinkDB.R;
-        private readonly Connection _connection;
 
 
         /// <summary>
@@ -86,62 +85,55 @@ namespace Serilog.Sinks.RethinkDB
             _tableName = tableName;
             _indexName = indexName;
             _useProps = useProps;
-            _connection = EnsureConnection(_connection);
             EnsureDatabaseAndTable();
         }
 
         private void EnsureDatabaseAndTable()
         {
-            var dbExists = R.DbList().Contains(_databaseName).Run(_connection);
-            if (!dbExists)
-                R.DbCreate(_databaseName).Run(_connection);
-
-            var tableExists = R.Db(_databaseName).TableList().Contains(_tableName).Run(_connection);
-            if (!tableExists)
-                R.Db(_databaseName).TableCreate(_tableName).Run(_connection);
-
-            var indexExists = R.Db(_databaseName).Table(_tableName).IndexList().Contains(_indexName).Run(_connection);
-            if (!indexExists)
+            using (var conn = R.Connection().Hostname(_hostName).Port(_port).Connect())
             {
-                R.Db(_databaseName).Table(_tableName).IndexCreate(_indexName, row => R.Array(row.G("Timestamp"), row.G("SequentialId"))).Run(_connection);
-                R.Db(_databaseName).Table(_tableName).IndexWait(_indexName).Run(_connection);
+                var dbExists = R.DbList().Contains(_databaseName).Run(conn);
+                if (!dbExists)
+                    R.DbCreate(_databaseName).Run(conn);
+
+                var tableExists = R.Db(_databaseName).TableList().Contains(_tableName).Run(conn);
+                if (!tableExists)
+                    R.Db(_databaseName).TableCreate(_tableName).Run(conn);
+
+                var indexExists = R.Db(_databaseName).Table(_tableName).IndexList().Contains(_indexName).Run(conn);
+                if (!indexExists)
+                {
+                    R.Db(_databaseName).Table(_tableName).IndexCreate(_indexName, row => R.Array(row.G("Timestamp"), row.G("SequentialId"))).Run(conn);
+                    R.Db(_databaseName).Table(_tableName).IndexWait(_indexName).Run(conn);
+                }
             }
         }
 
-        private Connection EnsureConnection(Connection conn)
-        {
-            if (conn == null)
-                conn = R.Connection().Hostname(_hostName).Port(_port).Connect();
-
-            if (!conn.Open)
-                conn.Reconnect();
-
-            return conn;
-        }
-
+        
         /// <summary>
         /// Emit the provided log event to the sink.
         /// </summary>
         /// <param name="logEvent"></param>
         public void Emit(LogEvent logEvent)
         {
-            EnsureConnection(_connection);
-
-            var rethinkDbLogEvent = new RethinkDbLogEvent()
+            using (var conn = R.Connection().Hostname(_hostName).Port(_port).Connect()) 
             {
-                Id = Guid.NewGuid(),
-                SequentialId = logEvent.Properties.ContainsKey("SequentialId") ? ((ScalarValue)logEvent.Properties["SequentialId"]).Value : -1,
-                Timestamp = logEvent.Timestamp,
-                Message = logEvent.RenderMessage(),
-                MessageTemplate = logEvent.MessageTemplate.Text,
-                Level = logEvent.Level,
-                Exception = logEvent?.Exception?.ToString(),
-                Props = _useProps == true ? SetProps(logEvent) : null,
-                ContextName = logEvent.GetScalarValueObject() != null ? logEvent.GetScalarValueObject().GetType().Name : null,
-                ContextData = logEvent.GetScalarValueObject()
-            };
+                var rethinkDbLogEvent = new RethinkDbLogEvent()
+                {
+                    Id = Guid.NewGuid(),
+                    SequentialId = logEvent.Properties.ContainsKey("SequentialId") ? ((ScalarValue)logEvent.Properties["SequentialId"]).Value : -1,
+                    Timestamp = logEvent.Timestamp,
+                    Message = logEvent.RenderMessage(),
+                    MessageTemplate = logEvent.MessageTemplate.Text,
+                    Level = logEvent.Level,
+                    Exception = logEvent?.Exception?.ToString(),
+                    Props = _useProps == true ? SetProps(logEvent) : null,
+                    ContextName = logEvent.GetScalarValueObject() != null ? logEvent.GetScalarValueObject().GetType().Name : null,
+                    ContextData = logEvent.GetScalarValueObject()
+                };
 
-            R.Db(_databaseName).Table(_tableName).Insert(rethinkDbLogEvent).Run(_connection);
+                R.Db(_databaseName).Table(_tableName).Insert(rethinkDbLogEvent).Run(conn);
+            }
         }
 
         private Dictionary<string, object> SetProps(LogEvent logEvent)
